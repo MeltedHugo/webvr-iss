@@ -34,7 +34,7 @@ function time(){
 
 function telemetry(){
   // Get ISS Telemetry
-  $.getJSON('http://open-notify-api.herokuapp.com/iss-now.json?callback=?', function(data) {
+  $.getJSON('https://open-notify-api.herokuapp.com/iss-now.json?callback=?', function(data) {
     // data is the JSON string
     latitude = data["iss_position"]["latitude"];
     longitude = data["iss_position"]["longitude"];
