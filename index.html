@@ -17,9 +17,9 @@
 				<!--<img id="sun" src="iss-img/2k_sun.jpg">-->
 			</a-assets>
 
-			<<a-sky src="#sky" />
-			<a-entity light="type: ambient; color: #CCC; intensity:0.5" />
-			<a-sphere id="sun" radius="5" material="color: #FFF" position="-800 0 0" light="type:point" />
+			<a-sky src="#sky"></a-sky>
+			<a-entity light="type: ambient; color: #CCC; intensity:0.5"></a-entity>
+			<a-sphere id="sun" radius="5" material="color: #FFF" position="-800 0 0" light="type:point"></a-entity>
 
 			<a-entity id="earth_orbit">
 				<a-sphere id="earth" radius=80 material="src: #earth-day; roughness:0.8" position="0 0 0" segments-height="180" segments-width="180">
@@ -32,11 +32,10 @@
 							from="0 90 0"
 							to="0 90 0"
 							repeat="indefinite"
-						/>
-						<a-camera rotation="0 0 0" position="0 0 86" userHeight="0" far="10000000000000" />
+						></a-animation>
+						<a-camera rotation="0 0 0" position="0 0 86" userHeight="0" far="10000000000000"></a-camera>
 					</a-entity>
 				</a-sphere>
-
 			</a-entity>
 
 		</a-scene>
