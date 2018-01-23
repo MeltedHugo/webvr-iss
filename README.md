@@ -9,7 +9,11 @@ The user shall sit inside an area that resembles the Cupola platform that is par
 Even if the paper that goes along with this project is finished, development on this project will continue.
 
 ## How do I use it?
+
 Just open the website of this project at https://hugobert.github.io/webvr-iss/
+
 Click and drag your mouse to change your view.
+
 Press the VR icon in the lower right corner to enter VR mode.
+
 Press Ctrl+Alt+i to enter inspection mode, a debug view of A-Frame, where you can fiddle around with all the objects.
