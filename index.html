@@ -1,18 +1,54 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
-  </head>
-  <body>
-    <a-scene>
-      <a-assets>
-        <img id="earth-day" src="https://ucarecdn.com/15bd211b-891d-4752-8849-095c99375e12/" crossorigin="anonymous"/>
-      </a-assets>
+	<head>
+		<script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script> <!-- for JSON parsing -->
+	</head>
+	<body>
 
-      <a-sky color="#000000"></a-sky>
-      <a-sphere id="earth" rotation="0 -90 0" material="src: #earth-day" position="0 0 0" radius="80" segments-height="180" segments-width="180"></a-sphere>
-      <a-camera rotation="0 0 0" position="0 0 86" userHeight="0"></a-camera>
+    <!-- All JS is in an external file for convenience -->
+		<script src="js/iss.js"></script>
 
-    </a-scene>
-  </body>
+		<a-scene>
+      <!-- This is the Asset Manager: Textures, models, sounds, etc... -->
+			<a-assets>
+        <img id="sky" src="res/starmap.jpg">
+				<img id="earth-day" src="res/earth_daymap.jpg">
+				<img id="earth-clouds" src="res/earth_clouds.png">
+				<!--<img id="sun" src="iss-img/2k_sun.jpg">-->
+			</a-assets>
+
+			<<a-sky src="#sky" />
+			<a-entity light="type: ambient; color: #CCC; intensity:0.5" />
+			<a-sphere id="sun" radius="5" material="color: #FFF" position="-800 0 0" light="type:point" />
+
+			<a-entity id="earth_orbit">
+				<a-sphere id="earth" radius=80 material="src: #earth-day; roughness:0.8" position="0 0 0" segments-height="180" segments-width="180">
+					<a-sphere id="clouds" radius="81" material="src: #earth-clouds; roughness:1; opacity:0.4" position="0 0 0" segments-height="180" segments-width="180"></a-sphere>
+					<a-entity id="iss_orbit" position="0 0 0" rotation="0 90 0">
+						<a-animation
+							id="iss_orbit_animation"
+							easing="linear"
+							dur="5000"
+							from="0 90 0"
+							to="0 90 0"
+							repeat="indefinite"
+						/>
+						<a-camera rotation="0 0 0" position="0 0 86" userHeight="0" far="10000000000000" />
+					</a-entity>
+				</a-sphere>
+
+			</a-entity>
+
+		</a-scene>
+
+		<script>
+			// Get time and set earth rotation. Currently, this only happens once, but should happen maybe once a minute.
+			time();
+			// Get telemetry once. Is probably redundant because we want to do this right at the start.
+			telemetry();
+			// Update telemetry every 5 seconds. Is probably still too often, but increasing this will result in longer preparation time in the beginning. Gotta fix this.
+			setInterval(telemetry,5000);
+		</script>
+
+	</body>
 </html>
