@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="earth-day" src="https://ucarecdn.com/15bd211b-891d-4752-8849-095c99375e12/" crossorigin="anonymous"/>
+      </a-assets>
+
+      <a-sky color="#000000"></a-sky>
+      <a-sphere id="earth" rotation="0 -90 0" material="src: #earth-day" position="0 0 0" radius="80" segments-height="180" segments-width="180"></a-sphere>
+      <a-camera rotation="0 0 0" position="0 0 86" userHeight="0"></a-camera>
+
+    </a-scene>
+  </body>
+</html>
