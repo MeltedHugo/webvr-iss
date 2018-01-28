@@ -9,7 +9,7 @@
     <!-- All JS is in an external file for convenience -->
 		<script src="js/iss.js"></script>
 
-		<a-scene>
+		<a-scene enter-vr="document.getElementById("camera").setAttribute("position","0 -0.3 89.6");" exit-vr="document.getElementById("camera").setAttribute("position","0 -0.7 89.6");">
       <!-- This is the Asset Manager: Textures, models, sounds, etc... -->
 			<a-assets>
         <img id="sky" src="res/starmap.jpg">
