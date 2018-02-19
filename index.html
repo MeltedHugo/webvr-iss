@@ -2,6 +2,7 @@
 	<head>
 		<title>WebVR ISS</title>
 		<script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+		<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
 		<script src="https://code.jquery.com/jquery-1.10.2.js"></script> <!-- for JSON parsing -->
 	</head>
 	<body>
@@ -37,8 +38,16 @@
 						></a-animation>
 
 						<!-- Camera must be child of model, else camera rotation will also affect model. Weird rotation due to the weird model. It does the job. -->
-						<a-gltf-model src="#cupola-iva" position="0 0 86" rotation="0 180 0"></a-gltf-model>
-						<a-camera wasd-controls="enabled: false"  camera="userHeight: 0.82; far: 10000000000000" id="camera" rotation="0 0 0" position="0 -0.3 89.6" ></a-camera>
+						<a-gltf-model id="cupola-model" src="#cupola-iva" position="0 0 86" rotation="0 180 0" visible="true"></a-gltf-model>
+						<a-cylinder id="button" position="0.160 0.210 89.250" rotation="-96.94 0 0" scale="0.05 0.05 0.05" material="" hide-model></a-cylinder>
+						<a-camera wasd-controls="enabled: false"  camera="userHeight: 0.82; far: 10000000000000" id="camera" rotation="0 0 0" position="0 -0.3 89.6" >
+							<a-entity cursor="fuse: true; fuseTimeout: 500"
+								position="0 0 -0.35"
+								geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015"
+								material="color: gray; shader: flat">
+								<a-animation begin="cursor-fusing" easing="ease-in" attribute="scale" dur="1000" fill="backwards" from="1 1 1" to="0.1 0.1 0.1"></a-animation>
+							</a-entity>
+						</a-camera>
 
 
 
@@ -55,6 +64,26 @@
 			telemetry();
 			// Update telemetry every 5 seconds. Is probably still too often, but increasing this will result in longer preparation time in the beginning. Gotta fix this.
 			setInterval(telemetry,5000);
+
+			AFRAME.registerComponent('hide-model', {
+				schema: {
+					color: {default: 'red'}
+				},
+
+				init: function () {
+					var model = document.getElementById("cupola-model");
+
+					document.getElementById("button").addEventListener('click', function () {
+						if(model.getAttribute("visible")==true){
+							console.log("Hide model");
+							model.setAttribute("visible", false);
+						} else {
+							console.log("Show model");
+							model.setAttribute("visible", true);
+						}
+					});
+				}
+			});
 		</script>
 
 	</body>
