@@ -18,7 +18,8 @@
         <img id="sky" src="res/starmap.jpg">
 				<img id="earth-day" src="res/earth_daymap.jpg">
 				<img id="earth-clouds" src="res/earth_clouds.png">
-				<a-asset-item id="cupola-iva" src="res/cupola/scene.gltf">
+				<a-asset-item id="cupola-iva" src="res/cupola/scene.gltf"></a-asset-item>
+				<a-asset-item id="sound-atmos" src="res/atmos.mp3" response-type="arraybuffer"></a-asset-item>
 			</a-assets>
 
 			<a-sky src="#sky"></a-sky> <!-- the stars -->
@@ -44,12 +45,13 @@
 						<a-gltf-model id="cupola-model" src="#cupola-iva" position="0 0 86" rotation="0 180 0" visible="true"></a-gltf-model> <!-- the 3D model -->
 						<a-cylinder id="button" position="0.160 0.210 89.250" rotation="-96.94 0 0" scale="0.05 0.05 0.05" material="" hide-model></a-cylinder> <!-- the interactive button -->
 						<a-camera wasd-controls="enabled: false"  camera="userHeight: 0.82; far: 10000000000000" id="camera" rotation="0 0 0" position="0 -0.3 89.6" > <!-- the camera -->
-							<!-- the cursor, with an animation as its child -->
+							<!-- the cursor, with an animation and atmospheric sound as its childs -->
 							<a-entity cursor="fuse: true; fuseTimeout: 500"
 								position="0 0 -0.35"
 								geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015"
 								material="color: gray; shader: flat">
 								<a-animation begin="cursor-fusing" easing="ease-in" attribute="scale" dur="1000" fill="backwards" from="1 1 1" to="0.1 0.1 0.1"></a-animation>
+								<a-sound src="#sound-atmos" autoplay="true" loop="true"></a-sound>
 							</a-entity>
 						</a-camera>
 
