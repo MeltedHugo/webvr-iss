@@ -2,7 +2,7 @@
 	<head>
 		<title>WebVR ISS</title>
 		<script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
-		<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+		<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script> <!-- for gaze-based interactions -->
 		<script src="https://code.jquery.com/jquery-1.10.2.js"></script> <!-- for JSON parsing -->
 	</head>
 	<body>
@@ -11,6 +11,8 @@
 		<script src="js/iss.js"></script>
 
 		<a-scene enter-vr="document.getElementById('camera').setAttribute('position','0 -0.3 89.6');" exit-vr="document.getElementById('camera').setAttribute('position','0 -0.7 89.6');">
+			<!-- due to a bug, camera needs to be repositioned after entering and leaving vr -->
+
       <!-- This is the Asset Manager: Textures, models, sounds, etc... -->
 			<a-assets>
         <img id="sky" src="res/starmap.jpg">
@@ -19,14 +21,17 @@
 				<a-asset-item id="cupola-iva" src="res/cupola/scene.gltf">
 			</a-assets>
 
-			<a-sky src="#sky"></a-sky>
-			<a-entity light="type: ambient; color: #CCC; intensity:0.5"></a-entity>
-			<a-sphere id="sun" radius="5" material="color: #FFF" position="-800 0 0" light="type:point"></a-sphere>
+			<a-sky src="#sky"></a-sky> <!-- the stars -->
+			<a-entity light="type: ambient; color: #CCC; intensity:0.5"></a-entity> <!-- without this, the dark side of the earth would be completely black -->
+			<a-sphere id="sun" radius="5" material="color: #FFF" position="-800 0 0" light="type:point"></a-sphere> <!-- the sun -->
 
-			<a-entity id="earth_orbit">
-				<a-sphere id="earth" radius=80 material="src: #earth-day; roughness:0.8" position="0 0 0" segments-height="180" segments-width="180">
-					<a-sphere id="clouds" radius="81" material="src: #earth-clouds; roughness:1; opacity:0.4" position="0 0 0" segments-height="180" segments-width="180"></a-sphere>
+			<a-entity id="earth_orbit"> <!-- using another container like this might be useful for tilting the earth according to the current month/season -->
+				<a-sphere id="earth" radius=80 material="src: #earth-day; roughness:0.8" position="0 0 0" segments-height="180" segments-width="180"> <!--the actual earth -->
+					<a-sphere id="clouds" radius="81" material="src: #earth-clouds; roughness:1; opacity:0.4" position="0 0 0" segments-height="180" segments-width="180"></a-sphere> <!-- earth's cloud layer -->
+
+					<!-- here comes the orbit of the ISS -->
 					<a-entity id="iss_orbit" position="0 0 0" rotation="0 90 0">
+						<!-- the "from" and "to" values will be changed by JavaScript every 5 seconds-->
 						<a-animation
 							id="iss_orbit_animation"
 							easing="linear"
@@ -36,10 +41,10 @@
 							repeat="indefinite"
 						></a-animation>
 
-						<!-- Camera must be child of model, else camera rotation will also affect model. Weird rotation due to the weird model. It does the job. -->
-						<a-gltf-model id="cupola-model" src="#cupola-iva" position="0 0 86" rotation="0 180 0" visible="true"></a-gltf-model>
-						<a-cylinder id="button" position="0.160 0.210 89.250" rotation="-96.94 0 0" scale="0.05 0.05 0.05" material="" hide-model></a-cylinder>
-						<a-camera wasd-controls="enabled: false"  camera="userHeight: 0.82; far: 10000000000000" id="camera" rotation="0 0 0" position="0 -0.3 89.6" >
+						<a-gltf-model id="cupola-model" src="#cupola-iva" position="0 0 86" rotation="0 180 0" visible="true"></a-gltf-model> <!-- the 3D model -->
+						<a-cylinder id="button" position="0.160 0.210 89.250" rotation="-96.94 0 0" scale="0.05 0.05 0.05" material="" hide-model></a-cylinder> <!-- the interactive button -->
+						<a-camera wasd-controls="enabled: false"  camera="userHeight: 0.82; far: 10000000000000" id="camera" rotation="0 0 0" position="0 -0.3 89.6" > <!-- the camera -->
+							<!-- the cursor, with an animation as its child -->
 							<a-entity cursor="fuse: true; fuseTimeout: 500"
 								position="0 0 -0.35"
 								geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015"
@@ -57,26 +62,27 @@
 		</a-scene>
 
 		<script>
-			// Get time and set earth rotation. Currently, this only happens once, but should happen maybe once a minute.
+			// Get time and set earth rotation relative to the sun. Should update maybe once an hour, so I don't bother.
 			time();
-			// Get telemetry once. Is probably redundant because we want to do this right at the start.
+			// Get telemetry once.
 			telemetry();
-			// Update telemetry every 5 seconds. Is probably still too often, but increasing this will result in longer preparation time in the beginning. Gotta fix this.
+			// Update telemetry every 5 seconds. Is probably still too often, but increasing this will result in longer preparation time in the beginning.
 			setInterval(telemetry,5000);
 
+			// register the trigger and the target for the gaze-based interaction
 			AFRAME.registerComponent('hide-model', {
-				schema: {
-					color: {default: 'red'}
-				},
+				schema: {},
 
 				init: function () {
-					var model = document.getElementById("cupola-model");
+					var model = document.getElementById("cupola-model"); // the target
 
 					document.getElementById("button").addEventListener('click', function () {
 						if(model.getAttribute("visible")==true){
+							// do this if the model is currently visible (default)
 							console.log("Hide model");
 							model.setAttribute("visible", false);
 						} else {
+							// do this if the model is currently NOT visible
 							console.log("Show model");
 							model.setAttribute("visible", true);
 						}

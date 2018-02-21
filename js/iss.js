@@ -6,7 +6,7 @@ var oldlatitude = 0;
 var oldlongitude = 0;
 var iss_position = (latitude*(-1))+" "+(longitude+90)+" 0";
 
-//get telemetry before DOM to get position data asap
+//get telemetry before DOM to get position data asap. Will throw an error because it has can't find any HTML elements to change, but will at least get the coordinates.
 telemetry();
 
 
@@ -33,9 +33,9 @@ function time(){
 
 
 function telemetry(){
-  // Get ISS Telemetry
+  // Get ISS Telemetry via JSON
   $.getJSON('https://open-notify-api.herokuapp.com/iss-now.json?callback=?', function(data) {
-    // data is the JSON string
+    // "data" is the JSON string
     latitude = data["iss_position"]["latitude"];
     longitude = data["iss_position"]["longitude"];
   });
@@ -47,12 +47,12 @@ function telemetry(){
 
 
   if(oldlatitude==0&&oldlongitude==0){
-    // This is the case if the page has just loaded. This will later be something to tell the window shields to be shut.
-    document.getElementById("iss_orbit_animation").setAttribute("easing","ease");
+    // This is the case if the page has just loaded. This could later be something to tell the window shields to be shut or something like that.
+    document.getElementById("iss_orbit_animation").setAttribute("easing","ease"); // start the animation slowly
     console.log("Inital positioning - please wait");
   }else{
     // This is the normal behavior.
-    document.getElementById("iss_orbit_animation").setAttribute("easing","linear");
+    document.getElementById("iss_orbit_animation").setAttribute("easing","linear"); // animate in a linear motion
   }
 
   // Set position to last position and move from there to the newest position.
@@ -65,10 +65,3 @@ function telemetry(){
   oldlongitude=longitude;
 
 }
-
- // units in meters, maybe scale stuff down because limited draw distance makes these useless
- //var sun_diameter = 1400000000;
- //var sun_radius = sun_diameter/2;
- //var earth_orbit = 150000000000;
- //var earth_diameter = 12430000;
- //var earth_radius = earth_diameter/2;
