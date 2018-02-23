@@ -19,7 +19,7 @@
 				<img id="earth-day" src="res/earth_daymap.jpg">
 				<img id="earth-clouds" src="res/earth_clouds.png">
 				<a-asset-item id="cupola-iva" src="res/cupola/scene.gltf"></a-asset-item>
-				<a-asset-item id="sound-atmos" src="res/atmos.mp3" response-type="arraybuffer"></a-asset-item>
+				<a-asset-item id="sound-atmos" src="res/atmos.mp3" response-type="arraybuffer"></a-asset-item> <!-- arraybuffer is needed for audio or else doesn't work due to a bug: https://github.com/aframevr/aframe/issues/2754 -->
 			</a-assets>
 
 			<a-sky src="#sky"></a-sky> <!-- the stars -->
@@ -64,7 +64,7 @@
 		</a-scene>
 
 		<script>
-			// Get time and set earth rotation relative to the sun. Should update maybe once an hour, so I don't bother.
+			// Get time and set earth rotation relative to the sun. Should update maximum once an hour, so I don't bother.
 			time();
 			// Get telemetry once.
 			telemetry();
