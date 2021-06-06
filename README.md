@@ -10,7 +10,7 @@ The paper that goes along with this project is finished (like, an eternity ago),
 
 ## How do I use it?
 
-Just open the website of this project at https://hugobert.github.io/webvr-iss/
+Just open the website of this project at https://meltedhugo.github.io/webvr-iss/
 
 Click and drag your mouse to change your view.
 
